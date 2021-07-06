@@ -3,6 +3,7 @@
 class Example{
     public:
     std::string m_name;
+    Example(){}
 
     // default constructor
     Example(std::string name){
@@ -58,5 +59,21 @@ int main(){
 
     delete expPtrNew;   // [prints Destroyed]
     free(expPtrMalloc); // [DONOT prints Destroyed as destructor not called]
-    // exp will be automatically destroyed when scope ends [prints Destroyed]
+
+
+
+    // Another thing about New & Delete for array intialisation:
+    // Rule of Thumb, every new corresponds to a delete;
+    // on usage of array operator in new, use that in delete too;
+    Example* nonArray = new Example("nonArray");
+
+    //note New for arrays cant be called with non-dummyconstructor
+    Example* array = new Example[10];
+
+    for(int i=0;i<10;i++) array[i] = Example("array");
+
+
+    std::cout << sizeof(nonArray) << " " << sizeof(nonArray) << std::endl; // prints 8 8
+    delete nonArray; //prints nonArray destroyed
+    delete[] array; // prints array destoyed 10 times
 }
